@@ -3,7 +3,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader, Subset
 from dataset import SpectrogramDataset
-from models import AudioCNN, AudioMLP
+from models import AudioCNN, AudioMLP, AudioGCNN
 import matplotlib.pyplot as plt
 import os
 from sklearn.metrics import classification_report
@@ -99,7 +99,7 @@ def main():
     parser.add_argument('--batch-size', type=int, default=32)
     parser.add_argument('--lr', type=float, default=1e-3)
     parser.add_argument('--epochs', type=int, default=10)
-    parser.add_argument('--model', type=str, choices=['cnn', 'mlp'], default='cnn')
+    parser.add_argument('--model', type=str, choices=['cnn', 'mlp', 'gcnn'], default='cnn')
     parser.add_argument('--task', type=str, choices=['gender', 'age'], default='gender')
     parser.add_argument('--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu')
     args = parser.parse_args()
@@ -107,7 +107,6 @@ def main():
     dataset = SpectrogramDataset(args.csv, target_width=128, task=args.task)
     input_shape = (128, dataset.target_width)
 
-    # Stratified split
     labels = dataset.df[dataset.label_column].values
     train_indices, val_indices = train_test_split(
         list(range(len(dataset))),
@@ -124,8 +123,12 @@ def main():
     num_classes = 2 if args.task == 'gender' else 9
     if args.model == 'cnn':
         model = AudioCNN(num_classes=num_classes, input_shape=input_shape)
-    else:
+    elif args.model == 'mlp':
         model = AudioMLP(input_shape=input_shape, num_classes=num_classes)
+    elif args.model == 'gcnn':
+        model = AudioGCNN(input_shape=input_shape, num_classes=num_classes)
+    else:
+        raise ValueError(f"Unsupported model type: {args.model}")
 
     model.to(args.device)
 
@@ -147,7 +150,7 @@ def main():
             all_labels.extend(y.cpu().numpy())
 
     print("\nFinal Classification Report:")
-    print(classification_report(all_labels, all_preds, digits=4))
+    print(classification_report(all_labels, all_preds, digits=4, zero_division=0))
 
 
 if __name__ == '__main__':
