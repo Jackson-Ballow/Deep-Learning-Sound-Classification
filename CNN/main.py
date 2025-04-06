@@ -1,9 +1,13 @@
 import argparse
 import torch
 from torch import nn
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Subset
 from dataset import SpectrogramDataset
-from models import GenderCNN, GenderMLP
+from models import AudioCNN, AudioMLP
+import matplotlib.pyplot as plt
+import os
+from sklearn.metrics import classification_report
+from sklearn.model_selection import train_test_split
 
 
 def evaluate(model, dataloader, criterion, device):
@@ -24,6 +28,13 @@ def evaluate(model, dataloader, criterion, device):
 
 
 def train(model, train_loader, val_loader, optimizer, criterion, device, epochs):
+    history = {
+        "train_loss": [],
+        "train_acc": [],
+        "val_loss": [],
+        "val_acc": [],
+    }
+
     for epoch in range(1, epochs + 1):
         model.train()
         total_loss = 0.0
@@ -46,12 +57,45 @@ def train(model, train_loader, val_loader, optimizer, criterion, device, epochs)
         train_acc = correct / total
         val_loss, val_acc = evaluate(model, val_loader, criterion, device)
 
+        history["train_loss"].append(avg_train_loss)
+        history["train_acc"].append(train_acc)
+        history["val_loss"].append(val_loss)
+        history["val_acc"].append(val_acc)
+
         print(f"Epoch {epoch}/{epochs} - Train Loss: {avg_train_loss:.4f}, Acc: {train_acc:.4f} - Val Loss: {val_loss:.4f}, Acc: {val_acc:.4f}")
+    
+    return history
+
+
+def plot_results(history, task, model_type):
+    os.makedirs("plots", exist_ok=True)
+
+    epochs = range(1, len(history["train_loss"]) + 1)
+
+    plt.figure()
+    plt.plot(epochs, history["train_loss"], label="Train Loss")
+    plt.plot(epochs, history["val_loss"], label="Val Loss")
+    plt.title(f"{task.capitalize()} - {model_type.upper()} Loss")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.savefig(f"plots/{task}_{model_type}_loss.png")
+
+    plt.figure()
+    plt.plot(epochs, history["train_acc"], label="Train Accuracy")
+    plt.plot(epochs, history["val_acc"], label="Val Accuracy")
+    plt.title(f"{task.capitalize()} - {model_type.upper()} Accuracy")
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.legend()
+    plt.savefig(f"plots/{task}_{model_type}_accuracy.png")
+
+    print("\nPlots saved in /plots/")
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--csv', type=str, default='gender_labels.csv', help='Path to CSV with labels and npy paths')
+    parser.add_argument('--csv', type=str, default='labels.csv', help='Path to CSV with labels and npy paths')
     parser.add_argument('--batch-size', type=int, default=32)
     parser.add_argument('--lr', type=float, default=1e-3)
     parser.add_argument('--epochs', type=int, default=10)
@@ -60,30 +104,50 @@ def main():
     parser.add_argument('--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu')
     args = parser.parse_args()
 
-    # === Load dataset ===
     dataset = SpectrogramDataset(args.csv, target_width=128, task=args.task)
     input_shape = (128, dataset.target_width)
 
-    # === Train/Val split ===
-    train_size = int(0.8 * len(dataset))
-    val_size = len(dataset) - train_size
-    train_set, val_set = torch.utils.data.random_split(dataset, [train_size, val_size])
+    # Stratified split
+    labels = dataset.df[dataset.label_column].values
+    train_indices, val_indices = train_test_split(
+        list(range(len(dataset))),
+        test_size=0.2,
+        stratify=labels,
+        random_state=42
+    )
+    train_set = Subset(dataset, train_indices)
+    val_set = Subset(dataset, val_indices)
 
     train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True)
     val_loader = DataLoader(val_set, batch_size=args.batch_size, shuffle=False)
 
-    # === Model ===
     num_classes = 2 if args.task == 'gender' else 9
     if args.model == 'cnn':
-        model = GenderCNN(num_classes=num_classes, input_shape=input_shape)
+        model = AudioCNN(num_classes=num_classes, input_shape=input_shape)
     else:
-        model = GenderMLP(input_shape=input_shape, num_classes=num_classes)
+        model = AudioMLP(input_shape=input_shape, num_classes=num_classes)
+
     model.to(args.device)
 
-    # === Training ===
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
-    train(model, train_loader, val_loader, optimizer, criterion, args.device, args.epochs)
+    history = train(model, train_loader, val_loader, optimizer, criterion, args.device, args.epochs)
+
+    plot_results(history, task=args.task, model_type=args.model)
+
+    model.eval()
+    all_preds = []
+    all_labels = []
+    with torch.no_grad():
+        for X, y in val_loader:
+            X, y = X.to(args.device), y.to(args.device)
+            logits = model(X)
+            preds = logits.argmax(dim=1)
+            all_preds.extend(preds.cpu().numpy())
+            all_labels.extend(y.cpu().numpy())
+
+    print("\nFinal Classification Report:")
+    print(classification_report(all_labels, all_preds, digits=4))
 
 
 if __name__ == '__main__':

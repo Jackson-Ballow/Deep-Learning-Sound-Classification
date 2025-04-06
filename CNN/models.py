@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class GenderCNN(nn.Module):
+class AudioCNN(nn.Module):
     def __init__(self, num_classes=2, input_shape=(128, 128)):
-        super(GenderCNN, self).__init__()
+        super(AudioCNN, self).__init__()
         self.conv1 = nn.Conv2d(1, 16, kernel_size=3, padding=1)
         self.pool1 = nn.MaxPool2d(2, 2)
 
@@ -14,8 +14,7 @@ class GenderCNN(nn.Module):
         self.conv3 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
         self.pool3 = nn.MaxPool2d(2, 2)
 
-        # Dynamically compute flattened size after conv/pool
-        dummy_input = torch.zeros(1, 1, *input_shape)  # shape: (B, C, H, W)
+        dummy_input = torch.zeros(1, 1, *input_shape)
         x = self.pool1(F.relu(self.conv1(dummy_input)))
         x = self.pool2(F.relu(self.conv2(x)))
         x = self.pool3(F.relu(self.conv3(x)))
@@ -33,9 +32,9 @@ class GenderCNN(nn.Module):
         return self.fc2(x)
 
 
-class GenderMLP(nn.Module):
+class AudioMLP(nn.Module):
     def __init__(self, input_shape=(128, 128), num_classes=2):
-        super(GenderMLP, self).__init__()
+        super(AudioMLP, self).__init__()
         in_features = input_shape[0] * input_shape[1]
         self.fc1 = nn.Linear(in_features, 512)
         self.fc2 = nn.Linear(512, 128)

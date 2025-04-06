@@ -24,7 +24,8 @@ class SpectrogramDataset(Dataset):
         path = row['npy_path']
         label = int(row[self.label_column])
 
-        spec = np.load(path)  # shape: (128, ?)
+        spec = np.load(path) 
+        
         # Pad or crop to fixed width
         if spec.shape[1] < self.target_width:
             pad_width = self.target_width - spec.shape[1]
@@ -32,5 +33,5 @@ class SpectrogramDataset(Dataset):
         elif spec.shape[1] > self.target_width:
             spec = spec[:, :self.target_width]
 
-        tensor = torch.tensor(spec, dtype=torch.float32).unsqueeze(0)  # (1, 128, width)
+        tensor = torch.tensor(spec, dtype=torch.float32).unsqueeze(0)
         return tensor, label
