@@ -3,10 +3,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class GenderCNN(nn.Module):
-    def __init__(self):
+    def __init__(self, num_classes=2, input_shape=(128, 128)):
         super(GenderCNN, self).__init__()
-
-        self.conv1 = nn.Conv2d(1, 16, kernel_size=3, padding=1) 
+        self.conv1 = nn.Conv2d(1, 16, kernel_size=3, padding=1)
         self.pool1 = nn.MaxPool2d(2, 2)
 
         self.conv2 = nn.Conv2d(16, 32, kernel_size=3, padding=1)
@@ -15,8 +14,15 @@ class GenderCNN(nn.Module):
         self.conv3 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
         self.pool3 = nn.MaxPool2d(2, 2)
 
-        self.fc1 = nn.Linear(64 * 16 * 25, 128)
-        self.fc2 = nn.Linear(128, 2)
+        # Dynamically compute flattened size after conv/pool
+        dummy_input = torch.zeros(1, 1, *input_shape)  # shape: (B, C, H, W)
+        x = self.pool1(F.relu(self.conv1(dummy_input)))
+        x = self.pool2(F.relu(self.conv2(x)))
+        x = self.pool3(F.relu(self.conv3(x)))
+        flattened_size = x.view(1, -1).shape[1]
+
+        self.fc1 = nn.Linear(flattened_size, 128)
+        self.fc2 = nn.Linear(128, num_classes)
 
     def forward(self, x):
         x = self.pool1(F.relu(self.conv1(x)))
@@ -25,3 +31,18 @@ class GenderCNN(nn.Module):
         x = x.view(x.size(0), -1)
         x = F.relu(self.fc1(x))
         return self.fc2(x)
+
+
+class GenderMLP(nn.Module):
+    def __init__(self, input_shape=(128, 128), num_classes=2):
+        super(GenderMLP, self).__init__()
+        in_features = input_shape[0] * input_shape[1]
+        self.fc1 = nn.Linear(in_features, 512)
+        self.fc2 = nn.Linear(512, 128)
+        self.fc3 = nn.Linear(128, num_classes)
+
+    def forward(self, x):
+        x = x.view(x.size(0), -1)
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        return self.fc3(x)

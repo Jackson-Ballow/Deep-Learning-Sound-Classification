@@ -1,34 +1,36 @@
-import os
-import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import Dataset
+import numpy as np
 
 class SpectrogramDataset(Dataset):
-    def __init__(self, csv_path, target_width=200, transform=None):
+    def __init__(self, csv_path, target_width=128, task='gender'):
         self.df = pd.read_csv(csv_path)
-        self.transform = transform
         self.target_width = target_width
+        self.task = task
+
+        if task == 'gender':
+            self.label_column = 'gender_label'
+        elif task == 'age':
+            self.label_column = 'age_label'
+        else:
+            raise ValueError("Task must be 'gender' or 'age'.")
 
     def __len__(self):
         return len(self.df)
 
     def __getitem__(self, idx):
         row = self.df.iloc[idx]
-        spec = np.load(row['npy_path'])
-        spec = self._pad_or_crop(spec, self.target_width)
-        spec = np.expand_dims(spec, axis=0)
+        path = row['npy_path']
+        label = int(row[self.label_column])
 
-        if self.transform:
-            spec = self.transform(spec)
+        spec = np.load(path)  # shape: (128, ?)
+        # Pad or crop to fixed width
+        if spec.shape[1] < self.target_width:
+            pad_width = self.target_width - spec.shape[1]
+            spec = np.pad(spec, ((0, 0), (0, pad_width)), mode='constant')
+        elif spec.shape[1] > self.target_width:
+            spec = spec[:, :self.target_width]
 
-        return torch.tensor(spec, dtype=torch.float32), torch.tensor(row['gender_label'], dtype=torch.long)
-
-    def _pad_or_crop(self, spec, target_width):
-        h, w = spec.shape
-        if w < target_width:
-            pad_w = target_width - w
-            return np.pad(spec, ((0, 0), (0, pad_w)), mode='constant')
-        elif w > target_width:
-            return spec[:, :target_width]
-        return spec
+        tensor = torch.tensor(spec, dtype=torch.float32).unsqueeze(0)  # (1, 128, width)
+        return tensor, label
