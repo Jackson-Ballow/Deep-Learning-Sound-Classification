@@ -5,9 +5,9 @@ import numpy as np
 from tqdm import tqdm
 
 # === CONFIG ===
-CLIPS_DIR = "../data/common_voice/cv-corpus-21.0-delta-2025-03-14/en/clips"
-TSV_VALIDATED = "../data/common_voice/cv-corpus-21.0-delta-2025-03-14/en/validated.tsv"
-TSV_INVALIDATED = "../data/common_voice/cv-corpus-21.0-delta-2025-03-14/en/invalidated.tsv"
+CLIPS_DIR = "../data/cv-corpus-12.0-delta-2022-12-07/en/clips"
+TSV_VALIDATED = "../data/cv-corpus-12.0-delta-2022-12-07/en/validated.tsv"
+TSV_INVALIDATED = "../data/cv-corpus-12.0-delta-2022-12-07/en/invalidated.tsv"
 OUTPUT_DIR = "processed_spectrograms"
 CSV_OUTPUT_PATH = "labels.csv"
 SAMPLE_RATE = 16000

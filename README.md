@@ -1,3 +1,6 @@
 # Deep-Learning-Sound-Classification
 Dataset is from: https://commonvoice.mozilla.org/en/datasets
-Run tar -xvzf cv-corpus-21.0-delta-2025-03-14-en.tar.gz -C data/common_voice/ on the zip file to extract the data
+
+Run 
+$ tar -xzvf cv-corpus-12.0-delta-2022-12-07-en.tar.gz -C data/ 
+on the zip file to extract the data (do it in the project root file)
