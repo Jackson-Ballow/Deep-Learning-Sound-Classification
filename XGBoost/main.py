@@ -52,6 +52,9 @@ def main():
     parser.add_argument('--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu')
     args = parser.parse_args()
 
+    print(f"Model: {args.model}, Task: {args.task}, Device: {args.device}")
+    print(f"Batch size: {args.batch_size}, Epochs: {args.epochs}")
+
     dataset = SpectrogramDataset(args.csv, target_width=128, task=args.task)
     input_shape = (128, dataset.target_width)
 
