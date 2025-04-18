@@ -63,6 +63,10 @@ df = df.dropna(subset=['gender_label', 'age_label'])
 df['gender_label'] = df['gender_label'].astype(int)
 df['age_label'] = df['age_label'].astype(int)
 
+#Remove class 7 since it only has 1 member
+index_to_drop = df[df['age_label'] == 7].index
+df = df.drop(index_to_drop)
+
 print(f"After filtering: {len(df)}")
 print("Gender label distribution:", df['gender_label'].value_counts().to_dict())
 print("Age label distribution:", df['age_label'].value_counts().to_dict())
