@@ -8,6 +8,7 @@ from tqdm import tqdm
 CLIPS_DIR = "../data/cv-corpus-12.0-delta-2022-12-07/en/clips"
 TSV_VALIDATED = "../data/cv-corpus-12.0-delta-2022-12-07/en/validated.tsv"
 TSV_INVALIDATED = "../data/cv-corpus-12.0-delta-2022-12-07/en/invalidated.tsv"
+TSV_OTHER = "../data/cv-corpus-12.0-delta-2022-12-07/en/other.tsv"
 OUTPUT_DIR = "processed_spectrograms"
 CSV_OUTPUT_PATH = "labels.csv"
 SAMPLE_RATE = 16000
@@ -18,11 +19,13 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 # Load the TSV files
 df_valid = pd.read_csv(TSV_VALIDATED, sep='\t')
 df_invalid = pd.read_csv(TSV_INVALIDATED, sep='\t')
+df_other = pd.read_csv(TSV_OTHER, sep='\t')
 
 print(f"Validated rows: {len(df_valid)}")
 print(f"Invalidated rows: {len(df_invalid)}")
+print(f"Other rows: {len(df_other)}")
 
-df = pd.concat([df_valid, df_invalid], ignore_index=True)
+df = pd.concat([df_valid, df_invalid, df_other], ignore_index=True)
 df = df.drop_duplicates(subset='path')
 print(f"Combined and deduplicated rows: {len(df)}")
 
