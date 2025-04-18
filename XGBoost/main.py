@@ -3,68 +3,16 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader, Subset
 from dataset import SpectrogramDataset
-from models import AudioCNN, AudioMLP, AudioGCNN
+from xgboost_model import AudioXGBoost
 import matplotlib.pyplot as plt
 import os
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
-
-
-def evaluate(model, dataloader, criterion, device):
-    model.eval()
-    total_loss = 0.0
-    correct = 0
-    total = 0
-    with torch.no_grad():
-        for X, y in dataloader:
-            X, y = X.to(device), y.to(device)
-            logits = model(X)
-            loss = criterion(logits, y)
-            total_loss += loss.item() * y.size(0)
-            preds = logits.argmax(dim=1)
-            correct += (preds == y).sum().item()
-            total += y.size(0)
-    return total_loss / total, correct / total
+from sklearn.metrics import accuracy_score
 
 
 def train(model, train_loader, val_loader, optimizer, criterion, device, epochs):
-    history = {
-        "train_loss": [],
-        "train_acc": [],
-        "val_loss": [],
-        "val_acc": [],
-    }
-
-    for epoch in range(1, epochs + 1):
-        model.train()
-        total_loss = 0.0
-        correct = 0
-        total = 0
-        for X, y in train_loader:
-            X, y = X.to(device), y.to(device)
-            optimizer.zero_grad()
-            logits = model(X)
-            loss = criterion(logits, y)
-            loss.backward()
-            optimizer.step()
-
-            total_loss += loss.item() * y.size(0)
-            preds = logits.argmax(dim=1)
-            correct += (preds == y).sum().item()
-            total += y.size(0)
-
-        avg_train_loss = total_loss / total
-        train_acc = correct / total
-        val_loss, val_acc = evaluate(model, val_loader, criterion, device)
-
-        history["train_loss"].append(avg_train_loss)
-        history["train_acc"].append(train_acc)
-        history["val_loss"].append(val_loss)
-        history["val_acc"].append(val_acc)
-
-        print(f"Epoch {epoch}/{epochs} - Train Loss: {avg_train_loss:.4f}, Acc: {train_acc:.4f} - Val Loss: {val_loss:.4f}, Acc: {val_acc:.4f}")
-    
-    return history
+    return model.fit(train_loader, val_loader, num_boost_round=epochs)
 
 
 def plot_results(history, task, model_type):
@@ -99,7 +47,7 @@ def main():
     parser.add_argument('--batch-size', type=int, default=32)
     parser.add_argument('--lr', type=float, default=1e-3)
     parser.add_argument('--epochs', type=int, default=10)
-    parser.add_argument('--model', type=str, choices=['cnn', 'mlp', 'gcnn'], default='cnn')
+    parser.add_argument('--model', type=str, choices=['xgboost'], default='xgboost')
     parser.add_argument('--task', type=str, choices=['gender', 'age'], default='gender')
     parser.add_argument('--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu')
     args = parser.parse_args()
@@ -120,20 +68,16 @@ def main():
     train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True)
     val_loader = DataLoader(val_set, batch_size=args.batch_size, shuffle=False)
 
-    num_classes = 2 if args.task == 'gender' else 9
-    if args.model == 'cnn':
-        model = AudioCNN(num_classes=num_classes, input_shape=input_shape)
-    elif args.model == 'mlp':
-        model = AudioMLP(input_shape=input_shape, num_classes=num_classes)
-    elif args.model == 'gcnn':
-        model = AudioGCNN(input_shape=input_shape, num_classes=num_classes)
+    num_classes = 2 if args.task == 'gender' else 7
+    if args.model == 'xgboost':
+        model = AudioXGBoost(num_classes=num_classes)
     else:
         raise ValueError(f"Unsupported model type: {args.model}")
 
     model.to(args.device)
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+    optimizer = None
     history = train(model, train_loader, val_loader, optimizer, criterion, args.device, args.epochs)
 
     plot_results(history, task=args.task, model_type=args.model)
@@ -141,15 +85,12 @@ def main():
     model.eval()
     all_preds = []
     all_labels = []
-    with torch.no_grad():
-        for X, y in val_loader:
-            X, y = X.to(args.device), y.to(args.device)
-            logits = model(X)
-            preds = logits.argmax(dim=1)
-            all_preds.extend(preds.cpu().numpy())
-            all_labels.extend(y.cpu().numpy())
+
+    all_preds = model.predict(val_loader)
+    _, all_labels = model._extract_features(val_loader)
 
     print("\nFinal Classification Report:")
+    print(accuracy_score(all_labels, all_preds))
     print(classification_report(all_labels, all_preds, digits=4, zero_division=0))
 
 
