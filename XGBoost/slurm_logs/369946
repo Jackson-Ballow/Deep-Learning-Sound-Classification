@@ -1,0 +1,68 @@
+Current conda environment:
+# conda environments:
+#
+base                     /apps/cent7/anaconda/2024.02
+CS587                 *  /home/wang6622/.conda/envs/cent7/2024.02-py311/CS587
+
+
+Model: xgboost, Task: age, Device: cuda
+Batch size: 32, Epochs: 40
+[0]	train-mlogloss:1.79458	validation-mlogloss:1.80779
+[1]	train-mlogloss:1.67648	validation-mlogloss:1.70293
+[2]	train-mlogloss:1.57647	validation-mlogloss:1.61437
+[3]	train-mlogloss:1.48809	validation-mlogloss:1.53708
+[4]	train-mlogloss:1.41263	validation-mlogloss:1.47125
+[5]	train-mlogloss:1.34337	validation-mlogloss:1.41177
+[6]	train-mlogloss:1.28211	validation-mlogloss:1.35946
+[7]	train-mlogloss:1.22671	validation-mlogloss:1.31229
+[8]	train-mlogloss:1.17645	validation-mlogloss:1.26901
+[9]	train-mlogloss:1.13091	validation-mlogloss:1.23114
+[10]	train-mlogloss:1.08790	validation-mlogloss:1.19546
+[11]	train-mlogloss:1.04851	validation-mlogloss:1.16249
+[12]	train-mlogloss:1.01180	validation-mlogloss:1.13167
+[13]	train-mlogloss:0.97736	validation-mlogloss:1.10452
+[14]	train-mlogloss:0.94511	validation-mlogloss:1.07849
+[15]	train-mlogloss:0.91527	validation-mlogloss:1.05531
+[16]	train-mlogloss:0.88740	validation-mlogloss:1.03357
+[17]	train-mlogloss:0.86234	validation-mlogloss:1.01462
+[18]	train-mlogloss:0.83744	validation-mlogloss:0.99556
+[19]	train-mlogloss:0.81519	validation-mlogloss:0.97917
+[20]	train-mlogloss:0.79285	validation-mlogloss:0.96281
+[21]	train-mlogloss:0.77203	validation-mlogloss:0.94746
+[22]	train-mlogloss:0.75207	validation-mlogloss:0.93283
+[23]	train-mlogloss:0.73375	validation-mlogloss:0.91965
+[24]	train-mlogloss:0.71587	validation-mlogloss:0.90663
+[25]	train-mlogloss:0.69845	validation-mlogloss:0.89454
+[26]	train-mlogloss:0.68188	validation-mlogloss:0.88287
+[27]	train-mlogloss:0.66646	validation-mlogloss:0.87149
+[28]	train-mlogloss:0.65106	validation-mlogloss:0.86056
+[29]	train-mlogloss:0.63552	validation-mlogloss:0.84969
+[30]	train-mlogloss:0.62162	validation-mlogloss:0.84040
+[31]	train-mlogloss:0.60833	validation-mlogloss:0.83143
+[32]	train-mlogloss:0.59567	validation-mlogloss:0.82326
+[33]	train-mlogloss:0.58262	validation-mlogloss:0.81511
+[34]	train-mlogloss:0.57036	validation-mlogloss:0.80709
+[35]	train-mlogloss:0.55801	validation-mlogloss:0.79968
+[36]	train-mlogloss:0.54626	validation-mlogloss:0.79239
+[37]	train-mlogloss:0.53508	validation-mlogloss:0.78484
+[38]	train-mlogloss:0.52414	validation-mlogloss:0.77909
+[39]	train-mlogloss:0.51345	validation-mlogloss:0.77319
+
+Plots saved in /plots/
+
+Final Classification Report:
+0.7551020408163265
+              precision    recall  f1-score   support
+
+           0     0.9096    0.3656    0.5216       413
+           1     0.6805    0.9552    0.7948      2502
+           2     0.9066    0.6105    0.7297      1050
+           3     0.8958    0.4884    0.6322       475
+           4     0.8350    0.7672    0.7997      1220
+           5     0.9231    0.1165    0.2069       103
+           6     1.0000    0.2105    0.3478        19
+
+    accuracy                         0.7551      5782
+   macro avg     0.8787    0.5020    0.5761      5782
+weighted avg     0.7936    0.7551    0.7392      5782
+
