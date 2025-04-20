@@ -112,6 +112,8 @@ def main():
 
     print(f"Model: {args.model}, Task: {args.task}, Device: {args.device}")
     print(f"Batch size: {args.batch_size}, Epochs: {args.epochs}")
+    print(f"Embed dim: {args.embed_dim}, Num heads: {args.num_heads}, Num layers: {args.num_layers}")
+    print(f"Patch size: {args.patch_size}")
 
     dataset = SpectrogramDataset(args.csv, target_width=128, task=args.task)
     input_shape = (128, dataset.target_width)

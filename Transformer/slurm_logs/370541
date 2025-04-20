@@ -1,0 +1,32 @@
+Current conda environment:
+# conda environments:
+#
+base                     /apps/cent7/anaconda/2024.02
+CS587                 *  /home/wang6622/.conda/envs/cent7/2024.02-py311/CS587
+
+
+Model: transformer, Task: gender, Device: cuda
+Batch size: 32, Epochs: 10
+Epoch 1/10 - Train Loss: 0.3491, Acc: 0.8486 - Val Loss: 0.1355, Acc: 0.9493
+Epoch 2/10 - Train Loss: 0.1497, Acc: 0.9420 - Val Loss: 0.0995, Acc: 0.9682
+Epoch 3/10 - Train Loss: 0.1144, Acc: 0.9581 - Val Loss: 0.0743, Acc: 0.9734
+Epoch 4/10 - Train Loss: 0.0919, Acc: 0.9674 - Val Loss: 0.0683, Acc: 0.9767
+Epoch 5/10 - Train Loss: 0.0785, Acc: 0.9725 - Val Loss: 0.0790, Acc: 0.9692
+Epoch 6/10 - Train Loss: 0.0685, Acc: 0.9759 - Val Loss: 0.0548, Acc: 0.9806
+Epoch 7/10 - Train Loss: 0.0564, Acc: 0.9814 - Val Loss: 0.0548, Acc: 0.9824
+Epoch 8/10 - Train Loss: 0.0516, Acc: 0.9823 - Val Loss: 0.0848, Acc: 0.9741
+Epoch 9/10 - Train Loss: 0.0449, Acc: 0.9845 - Val Loss: 0.0604, Acc: 0.9810
+Epoch 10/10 - Train Loss: 0.0431, Acc: 0.9856 - Val Loss: 0.0508, Acc: 0.9841
+
+Plots saved in /plots/
+
+Final Classification Report:
+              precision    recall  f1-score   support
+
+           0     0.9853    0.9935    0.9894      4317
+           1     0.9804    0.9563    0.9682      1465
+
+    accuracy                         0.9841      5782
+   macro avg     0.9829    0.9749    0.9788      5782
+weighted avg     0.9841    0.9841    0.9840      5782
+

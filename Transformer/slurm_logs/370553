@@ -1,0 +1,52 @@
+Current conda environment:
+# conda environments:
+#
+base                     /apps/cent7/anaconda/2024.02
+CS587                 *  /home/wang6622/.conda/envs/cent7/2024.02-py311/CS587
+
+
+Model: transformer, Task: age, Device: cuda
+Batch size: 32, Epochs: 25
+Epoch 1/25 - Train Loss: 1.3552, Acc: 0.4972 - Val Loss: 1.0485, Acc: 0.6212
+Epoch 2/25 - Train Loss: 0.9551, Acc: 0.6573 - Val Loss: 0.7829, Acc: 0.7129
+Epoch 3/25 - Train Loss: 0.7236, Acc: 0.7433 - Val Loss: 0.6448, Acc: 0.7752
+Epoch 4/25 - Train Loss: 0.5877, Acc: 0.7964 - Val Loss: 0.5235, Acc: 0.8172
+Epoch 5/25 - Train Loss: 0.4931, Acc: 0.8294 - Val Loss: 0.5082, Acc: 0.8207
+Epoch 6/25 - Train Loss: 0.4198, Acc: 0.8566 - Val Loss: 0.4836, Acc: 0.8345
+Epoch 7/25 - Train Loss: 0.3647, Acc: 0.8746 - Val Loss: 0.4092, Acc: 0.8637
+Epoch 8/25 - Train Loss: 0.3240, Acc: 0.8894 - Val Loss: 0.4018, Acc: 0.8718
+Epoch 9/25 - Train Loss: 0.2868, Acc: 0.9022 - Val Loss: 0.3900, Acc: 0.8689
+Epoch 10/25 - Train Loss: 0.2466, Acc: 0.9172 - Val Loss: 0.3496, Acc: 0.8876
+Epoch 11/25 - Train Loss: 0.2236, Acc: 0.9238 - Val Loss: 0.3746, Acc: 0.8793
+Epoch 12/25 - Train Loss: 0.1999, Acc: 0.9327 - Val Loss: 0.3593, Acc: 0.8916
+Epoch 13/25 - Train Loss: 0.1856, Acc: 0.9364 - Val Loss: 0.3843, Acc: 0.8935
+Epoch 14/25 - Train Loss: 0.1606, Acc: 0.9462 - Val Loss: 0.4134, Acc: 0.8801
+Epoch 15/25 - Train Loss: 0.1473, Acc: 0.9485 - Val Loss: 0.3604, Acc: 0.8947
+Epoch 16/25 - Train Loss: 0.1421, Acc: 0.9501 - Val Loss: 0.3670, Acc: 0.9004
+Epoch 17/25 - Train Loss: 0.1129, Acc: 0.9615 - Val Loss: 0.4375, Acc: 0.8843
+Epoch 18/25 - Train Loss: 0.1112, Acc: 0.9613 - Val Loss: 0.3673, Acc: 0.9016
+Epoch 19/25 - Train Loss: 0.1073, Acc: 0.9615 - Val Loss: 0.3715, Acc: 0.8954
+Epoch 20/25 - Train Loss: 0.0924, Acc: 0.9682 - Val Loss: 0.3855, Acc: 0.9030
+Epoch 21/25 - Train Loss: 0.0845, Acc: 0.9710 - Val Loss: 0.4445, Acc: 0.8878
+Epoch 22/25 - Train Loss: 0.0878, Acc: 0.9691 - Val Loss: 0.4045, Acc: 0.9012
+Epoch 23/25 - Train Loss: 0.0851, Acc: 0.9706 - Val Loss: 0.4137, Acc: 0.8943
+Epoch 24/25 - Train Loss: 0.0710, Acc: 0.9752 - Val Loss: 0.3836, Acc: 0.9047
+Epoch 25/25 - Train Loss: 0.0759, Acc: 0.9737 - Val Loss: 0.3533, Acc: 0.9139
+
+Plots saved in /plots/
+
+Final Classification Report:
+              precision    recall  f1-score   support
+
+           0     0.8329    0.7845    0.8080       413
+           1     0.9097    0.9464    0.9277      2502
+           2     0.9185    0.8800    0.8988      1050
+           3     0.8974    0.8105    0.8518       475
+           4     0.9569    0.9639    0.9604      1220
+           5     0.8426    0.8835    0.8626       103
+           6     0.8889    0.8421    0.8649        19
+
+    accuracy                         0.9139      5782
+   macro avg     0.8924    0.8730    0.8820      5782
+weighted avg     0.9135    0.9139    0.9132      5782
+
