@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 
-def train(model, train_loader, val_loader, optimizer, criterion, device, epochs):
+def train(model, train_loader, val_loader, epochs):
     return model.fit(train_loader, val_loader, num_boost_round=epochs)
 
 
@@ -24,7 +24,7 @@ def plot_results(history, task, model_type):
     plt.plot(epochs, history["train_loss"], label="Train Loss")
     plt.plot(epochs, history["val_loss"], label="Val Loss")
     plt.title(f"{task.capitalize()} - {model_type.upper()} Loss")
-    plt.xlabel("Epoch")
+    plt.xlabel("Round")
     plt.ylabel("Loss")
     plt.legend()
     plt.savefig(f"plots/{task}_{model_type}_loss.png")
@@ -33,7 +33,7 @@ def plot_results(history, task, model_type):
     plt.plot(epochs, history["train_acc"], label="Train Accuracy")
     plt.plot(epochs, history["val_acc"], label="Val Accuracy")
     plt.title(f"{task.capitalize()} - {model_type.upper()} Accuracy")
-    plt.xlabel("Epoch")
+    plt.xlabel("Round")
     plt.ylabel("Accuracy")
     plt.legend()
     plt.savefig(f"plots/{task}_{model_type}_accuracy.png")
@@ -72,20 +72,11 @@ def main():
     val_loader = DataLoader(val_set, batch_size=args.batch_size, shuffle=False)
 
     num_classes = 2 if args.task == 'gender' else 7
-    if args.model == 'xgboost':
-        model = AudioXGBoost(num_classes=num_classes)
-    else:
-        raise ValueError(f"Unsupported model type: {args.model}")
-
-    model.to(args.device)
-
-    criterion = nn.CrossEntropyLoss()
-    optimizer = None
-    history = train(model, train_loader, val_loader, optimizer, criterion, args.device, args.epochs)
+    model = AudioXGBoost(num_classes=num_classes)
+    history = train(model, train_loader, val_loader, args.epochs)
 
     plot_results(history, task=args.task, model_type=args.model)
 
-    model.eval()
     all_preds = []
     all_labels = []
 
