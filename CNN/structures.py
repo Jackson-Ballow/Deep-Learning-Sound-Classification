@@ -1,10 +1,10 @@
 import torch
 
 def time_reversal(x):
-    return torch.flip(x, dims=[-1])  # flip along width (time)
+    return torch.flip(x, dims=[-1])
 
 def frequency_inversion(x):
-    return torch.flip(x, dims=[-2])  # flip along height (frequency)
+    return torch.flip(x, dims=[-2])
 
 def tf_transforms(x):
     return [

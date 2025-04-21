@@ -98,7 +98,7 @@ def main():
     parser.add_argument('--csv', type=str, default='labels.csv', help='Path to CSV with labels and npy paths')
     parser.add_argument('--batch-size', type=int, default=32)
     parser.add_argument('--lr', type=float, default=1e-3)
-    parser.add_argument('--epochs', type=int, default=10)
+    parser.add_argument('--epochs', type=int, default=15)
     parser.add_argument('--model', type=str, choices=['cnn', 'mlp', 'gcnn'], default='cnn')
     parser.add_argument('--task', type=str, choices=['gender', 'age'], default='gender')
     parser.add_argument('--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu')
