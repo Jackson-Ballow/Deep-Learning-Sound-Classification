@@ -1,0 +1,84 @@
+Current conda environment:
+# conda environments:
+#
+base                     /apps/cent7/anaconda/2024.02
+CS587                 *  /home/wang6622/.conda/envs/cent7/2024.02-py311/CS587
+
+
+/home/wang6622/.conda/envs/cent7/2024.02-py311/CS587/lib/python3.11/site-packages/xgboost/callback.py:386: UserWarning: [21:51:14] WARNING: /workspace/src/common/error_msg.cc:27: The tree method `gpu_hist` is deprecated since 2.0.0. To use GPU training, set the `device` parameter to CUDA instead.
+
+    E.g. tree_method = "hist", device = "cuda"
+
+  self.starting_round = model.num_boosted_rounds()
+Model: xgboost, Task: gender, Device: cuda
+Batch size: 32, Epochs: 50
+{'objective': 'binary:logistic', 'num_class': None, 'eta': 0.3, 'max_depth': 3, 'min_child_weight': 6, 'gamma': 0.3, 'subsample': 0.7, 'colsample_bytree': 0.7, 'lambda': 5.0, 'alpha': 1.0, 'eval_metric': 'logloss', 'tree_method': 'gpu_hist'}
+[0]	train-logloss:0.46132	validation-logloss:0.46460
+[1]	train-logloss:0.40084	validation-logloss:0.40364
+[2]	train-logloss:0.36125	validation-logloss:0.36398
+[3]	train-logloss:0.32975	validation-logloss:0.33439
+[4]	train-logloss:0.30672	validation-logloss:0.31209
+[5]	train-logloss:0.28831	validation-logloss:0.29420
+[6]	train-logloss:0.27021	validation-logloss:0.27762
+[7]	train-logloss:0.25581	validation-logloss:0.26469
+[8]	train-logloss:0.24488	validation-logloss:0.25490
+[9]	train-logloss:0.23472	validation-logloss:0.24404
+[10]	train-logloss:0.22491	validation-logloss:0.23505
+[11]	train-logloss:0.21520	validation-logloss:0.22565
+[12]	train-logloss:0.20594	validation-logloss:0.21764
+[13]	train-logloss:0.19797	validation-logloss:0.21009
+[14]	train-logloss:0.19242	validation-logloss:0.20590
+[15]	train-logloss:0.18710	validation-logloss:0.20105
+[16]	train-logloss:0.18133	validation-logloss:0.19758
+[17]	train-logloss:0.17651	validation-logloss:0.19348
+[18]	train-logloss:0.17178	validation-logloss:0.18961
+[19]	train-logloss:0.16718	validation-logloss:0.18529
+[20]	train-logloss:0.16221	validation-logloss:0.17977
+[21]	train-logloss:0.15843	validation-logloss:0.17708
+[22]	train-logloss:0.15361	validation-logloss:0.17326
+[23]	train-logloss:0.14996	validation-logloss:0.17030
+[24]	train-logloss:0.14728	validation-logloss:0.16754
+[25]	train-logloss:0.14396	validation-logloss:0.16472
+[26]	train-logloss:0.14097	validation-logloss:0.16301
+[27]	train-logloss:0.13755	validation-logloss:0.15957
+[28]	train-logloss:0.13419	validation-logloss:0.15705
+[29]	train-logloss:0.13118	validation-logloss:0.15447
+[30]	train-logloss:0.12839	validation-logloss:0.15290
+[31]	train-logloss:0.12597	validation-logloss:0.15155
+[32]	train-logloss:0.12319	validation-logloss:0.14871
+[33]	train-logloss:0.12061	validation-logloss:0.14630
+[34]	train-logloss:0.11824	validation-logloss:0.14541
+[35]	train-logloss:0.11596	validation-logloss:0.14415
+[36]	train-logloss:0.11420	validation-logloss:0.14284
+[37]	train-logloss:0.11192	validation-logloss:0.14132
+[38]	train-logloss:0.10996	validation-logloss:0.13934
+[39]	train-logloss:0.10830	validation-logloss:0.13793
+[40]	train-logloss:0.10590	validation-logloss:0.13563
+[41]	train-logloss:0.10344	validation-logloss:0.13441
+[42]	train-logloss:0.10199	validation-logloss:0.13336
+[43]	train-logloss:0.09978	validation-logloss:0.13127
+[44]	train-logloss:0.09809	validation-logloss:0.13057
+[45]	train-logloss:0.09658	validation-logloss:0.12921
+[46]	train-logloss:0.09510	validation-logloss:0.12819
+[47]	train-logloss:0.09338	validation-logloss:0.12745
+[48]	train-logloss:0.09188	validation-logloss:0.12629
+[49]	train-logloss:0.09033	validation-logloss:0.12508
+/home/wang6622/.conda/envs/cent7/2024.02-py311/CS587/lib/python3.11/site-packages/xgboost/core.py:729: UserWarning: [21:51:25] WARNING: /workspace/src/common/error_msg.cc:27: The tree method `gpu_hist` is deprecated since 2.0.0. To use GPU training, set the `device` parameter to CUDA instead.
+
+    E.g. tree_method = "hist", device = "cuda"
+
+  return func(**kwargs)
+
+Plots saved in /plots/
+
+Final Classification Report:
+0.9552058111380145
+              precision    recall  f1-score   support
+
+           0     0.9599    0.9810    0.9703      4317
+           1     0.9401    0.8792    0.9086      1465
+
+    accuracy                         0.9552      5782
+   macro avg     0.9500    0.9301    0.9395      5782
+weighted avg     0.9549    0.9552    0.9547      5782
+

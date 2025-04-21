@@ -1,0 +1,32 @@
+Current conda environment:
+# conda environments:
+#
+base                     /apps/cent7/anaconda/2024.02
+CS587                 *  /home/wang6622/.conda/envs/cent7/2024.02-py311/CS587
+
+
+Model: vit, Task: gender, Device: cuda
+Batch size: 32, Epochs: 10
+Epoch 1/10 - Train Loss: 0.5137, Acc: 0.7708 - Val Loss: 0.2353, Acc: 0.9123
+Epoch 2/10 - Train Loss: 0.2338, Acc: 0.9149 - Val Loss: 0.1852, Acc: 0.9364
+Epoch 3/10 - Train Loss: 0.1934, Acc: 0.9348 - Val Loss: 0.1759, Acc: 0.9370
+Epoch 4/10 - Train Loss: 0.1718, Acc: 0.9408 - Val Loss: 0.1383, Acc: 0.9545
+Epoch 5/10 - Train Loss: 0.1622, Acc: 0.9446 - Val Loss: 0.1413, Acc: 0.9535
+Epoch 6/10 - Train Loss: 0.1443, Acc: 0.9505 - Val Loss: 0.1289, Acc: 0.9559
+Epoch 7/10 - Train Loss: 0.1376, Acc: 0.9523 - Val Loss: 0.1147, Acc: 0.9600
+Epoch 8/10 - Train Loss: 0.1400, Acc: 0.9519 - Val Loss: 0.1239, Acc: 0.9521
+Epoch 9/10 - Train Loss: 0.1231, Acc: 0.9586 - Val Loss: 0.1121, Acc: 0.9626
+Epoch 10/10 - Train Loss: 0.1133, Acc: 0.9611 - Val Loss: 0.1057, Acc: 0.9614
+
+Plots saved in /plots/
+
+Final Classification Report:
+              precision    recall  f1-score   support
+
+           0     0.9617    0.9877    0.9745      4317
+           1     0.9607    0.8840    0.9207      1465
+
+    accuracy                         0.9614      5782
+   macro avg     0.9612    0.9358    0.9476      5782
+weighted avg     0.9614    0.9614    0.9609      5782
+
